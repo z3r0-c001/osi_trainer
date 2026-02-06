@@ -1,7 +1,7 @@
 // TOTP setup + verification handlers
 import { json, parseBody } from '../router.js';
-import { generateTotpSecret, buildTotpUri, verifyTotp, base32Encode } from '../services/totp.js';
-import { encrypt, generateBackupCodes, hashCode } from '../services/crypto.js';
+import { buildTotpUri, verifyTotp, base32Encode } from '../services/totp.js';
+import { generateTotpSecret, encrypt, generateBackupCodes, hashCode } from '../services/crypto.js';
 import { queries } from '../db/queries.js';
 
 export async function handleSetupTotp(reqCtx) {
