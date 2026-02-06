@@ -70,8 +70,8 @@ export default {
       }
       return response;
     } catch (err) {
-      console.error('Worker error:', err);
-      return json({ error: 'Internal server error' }, 500);
+      console.error('Worker error:', err.stack || err.message || err);
+      return json({ error: 'Internal server error', detail: err.message }, 500);
     }
   }
 };
