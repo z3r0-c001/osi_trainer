@@ -6,6 +6,13 @@ import { queries } from '../db/queries.js';
 
 const OTP_TTL_MINUTES = 5;
 
+async function resolveUserFromBody(db, userId) {
+  if (!userId) return null;
+  const row = await queries.getUserById(db, userId).first();
+  if (!row) return null;
+  return { id: row.id, email: row.email, displayName: row.display_name, role: row.role };
+}
+
 export async function handleRequestEmailOtp(reqCtx) {
   const body = await parseBody(reqCtx.request);
   if (!body || !body.userId) {
@@ -53,7 +60,9 @@ export async function handleRequestEmailOtp(reqCtx) {
 }
 
 export async function handleSetupEmailOtp(reqCtx) {
-  const user = reqCtx.user;
+  const body = await parseBody(reqCtx.request);
+  const user = reqCtx.user || await resolveUserFromBody(reqCtx.env.DB, body?.userId);
+  if (!user) return json({ error: 'userId is required' }, 400);
 
   // Set 2FA method to email
   await queries.updateTfaMethod(reqCtx.env.DB, user.id, 'email').run();
@@ -93,7 +102,8 @@ export async function handleVerifyEmailSetup(reqCtx) {
     return json({ error: 'Verification code is required' }, 400);
   }
 
-  const user = reqCtx.user;
+  const user = reqCtx.user || await resolveUserFromBody(reqCtx.env.DB, body.userId);
+  if (!user) return json({ error: 'userId is required' }, 400);
   const otp = await queries.getActiveEmailOtp(reqCtx.env.DB, user.id, 'setup').first();
   if (!otp) {
     return json({ error: 'No active OTP. Request a new one.' }, 400);

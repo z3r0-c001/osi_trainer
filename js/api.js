@@ -61,9 +61,9 @@ export const api = {
   logout: () => request('/auth/logout', { method: 'POST' }),
 
   // 2FA setup
-  setupTotp: () => request('/auth/setup-totp', { method: 'POST' }),
+  setupTotp: (body) => request('/auth/setup-totp', { method: 'POST', body }),
   verifyTotpSetup: (body) => request('/auth/verify-totp-setup', { method: 'POST', body }),
-  setupEmailOtp: () => request('/auth/setup-email-otp', { method: 'POST' }),
+  setupEmailOtp: (body) => request('/auth/setup-email-otp', { method: 'POST', body }),
   verifyEmailSetup: (body) => request('/auth/verify-email-setup', { method: 'POST', body }),
 
   // Profile

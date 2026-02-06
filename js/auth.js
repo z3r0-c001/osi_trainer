@@ -97,12 +97,12 @@ class AuthManager {
 
   // Set up TOTP
   async setupTotp() {
-    return await api.setupTotp();
+    return await api.setupTotp({ userId: this._pendingUserId });
   }
 
   // Verify TOTP setup (confirm user can generate valid codes)
   async verifyTotpSetup(code) {
-    const result = await api.verifyTotpSetup({ code });
+    await api.verifyTotpSetup({ userId: this._pendingUserId, code });
     // After verifying TOTP setup, create session
     const data = await api.verify2fa({
       userId: this._pendingUserId,
@@ -118,12 +118,12 @@ class AuthManager {
 
   // Set up email OTP
   async setupEmailOtp() {
-    return await api.setupEmailOtp();
+    return await api.setupEmailOtp({ userId: this._pendingUserId });
   }
 
   // Verify email OTP setup
   async verifyEmailSetup(code) {
-    const result = await api.verifyEmailSetup({ code });
+    await api.verifyEmailSetup({ userId: this._pendingUserId, code });
     // After verifying email setup, create session
     const data = await api.verify2fa({
       userId: this._pendingUserId,

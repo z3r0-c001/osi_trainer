@@ -7,7 +7,11 @@ const PUBLIC_PATHS = [
   '/api/auth/signup',
   '/api/auth/login',
   '/api/auth/verify-2fa',
-  '/api/auth/request-email-otp'
+  '/api/auth/request-email-otp',
+  '/api/auth/setup-totp',
+  '/api/auth/verify-totp-setup',
+  '/api/auth/setup-email-otp',
+  '/api/auth/verify-email-setup'
 ];
 
 export async function authMiddleware(reqCtx) {

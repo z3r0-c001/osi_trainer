@@ -5,7 +5,8 @@ import { generateTotpSecret, encrypt, generateBackupCodes, hashCode } from '../s
 import { queries } from '../db/queries.js';
 
 export async function handleSetupTotp(reqCtx) {
-  const user = reqCtx.user;
+  const user = reqCtx.user || await resolveUser(reqCtx);
+  if (!user) return json({ error: 'userId is required' }, 400);
 
   // Generate secret
   const secretBytes = generateTotpSecret();
@@ -46,7 +47,8 @@ export async function handleVerifyTotpSetup(reqCtx) {
     return json({ error: 'Verification code is required' }, 400);
   }
 
-  const user = reqCtx.user;
+  const user = reqCtx.user || await resolveUserFromBody(reqCtx.env.DB, body.userId);
+  if (!user) return json({ error: 'userId is required' }, 400);
   const totpRecord = await queries.getTotpSecret(reqCtx.env.DB, user.id).first();
   if (!totpRecord) {
     return json({ error: 'TOTP not set up. Call setup-totp first.' }, 400);
@@ -68,6 +70,19 @@ export async function handleVerifyTotpSetup(reqCtx) {
   await queries.setTfaVerified(reqCtx.env.DB, user.id).run();
 
   return json({ ok: true, message: 'TOTP verified successfully' });
+}
+
+// Resolve user from body userId when no session (during initial 2FA setup)
+async function resolveUser(reqCtx) {
+  const body = await parseBody(reqCtx.request);
+  return await resolveUserFromBody(reqCtx.env.DB, body?.userId);
+}
+
+async function resolveUserFromBody(db, userId) {
+  if (!userId) return null;
+  const row = await queries.getUserById(db, userId).first();
+  if (!row) return null;
+  return { id: row.id, email: row.email, displayName: row.display_name, role: row.role };
 }
 
 function bufToHex(buf) {
