@@ -5,40 +5,45 @@ import { generateTotpSecret, encrypt, generateBackupCodes, hashCode } from '../s
 import { queries } from '../db/queries.js';
 
 export async function handleSetupTotp(reqCtx) {
-  const user = reqCtx.user || await resolveUser(reqCtx);
-  if (!user) return json({ error: 'userId is required' }, 400);
+  try {
+    const user = reqCtx.user || await resolveUser(reqCtx);
+    if (!user) return json({ error: 'userId is required' }, 400);
 
-  // Generate secret
-  const secretBytes = generateTotpSecret();
-  const secretHex = bufToHex(secretBytes);
+    // Generate secret
+    const secretBytes = generateTotpSecret();
+    const secretHex = bufToHex(secretBytes);
 
-  // Encrypt for storage
-  const encryptionKey = reqCtx.env.ENCRYPTION_KEY;
-  const encryptedSecret = await encrypt(secretHex, encryptionKey);
+    // Encrypt for storage
+    const encryptionKey = reqCtx.env.ENCRYPTION_KEY;
+    if (!encryptionKey) return json({ error: 'ENCRYPTION_KEY not configured' }, 500);
+    const encryptedSecret = await encrypt(secretHex, encryptionKey);
 
-  // Generate backup codes
-  const backupCodes = generateBackupCodes();
-  const hashedCodes = await Promise.all(backupCodes.map(c => hashCode(c)));
+    // Generate backup codes
+    const backupCodes = generateBackupCodes();
+    const hashedCodes = await Promise.all(backupCodes.map(c => hashCode(c)));
 
-  // Save to DB
-  await queries.saveTotpSecret(reqCtx.env.DB, {
-    userId: user.id,
-    secret: encryptedSecret,
-    backupCodes: JSON.stringify(hashedCodes)
-  }).run();
+    // Save to DB
+    await queries.saveTotpSecret(reqCtx.env.DB, {
+      userId: user.id,
+      secret: encryptedSecret,
+      backupCodes: JSON.stringify(hashedCodes)
+    }).run();
 
-  // Set tfa_method on user
-  await queries.updateTfaMethod(reqCtx.env.DB, user.id, 'totp').run();
+    // Set tfa_method on user
+    await queries.updateTfaMethod(reqCtx.env.DB, user.id, 'totp').run();
 
-  // Build QR URI
-  const uri = buildTotpUri(secretBytes, user.email);
-  const secret32 = base32Encode(secretBytes);
+    // Build QR URI
+    const uri = buildTotpUri(secretBytes, user.email);
+    const secret32 = base32Encode(secretBytes);
 
-  return json({
-    totpUri: uri,
-    secret: secret32,
-    backupCodes
-  });
+    return json({
+      totpUri: uri,
+      secret: secret32,
+      backupCodes
+    });
+  } catch (err) {
+    return json({ error: 'TOTP setup failed', detail: err.message }, 500);
+  }
 }
 
 export async function handleVerifyTotpSetup(reqCtx) {
