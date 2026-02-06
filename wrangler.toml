@@ -1,0 +1,14 @@
+name = "osi-training"
+compatibility_date = "2024-12-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "osi-training-db"
+database_id = "4b9c3bda-3039-4192-b503-1116ae8138b5"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "43a9393b7a2d44d88ae55a3cd9d8aced"
+
+[vars]
+ENVIRONMENT = "production"

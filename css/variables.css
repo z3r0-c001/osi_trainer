@@ -1,0 +1,128 @@
+/* Design Tokens */
+:root {
+  /* Base colors */
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  /* Accent */
+  --accent: #4361ee;
+  --accent-hover: #3a56d4;
+  --accent-light: #eef0fd;
+
+  /* Success / Error / Warning */
+  --success: #2ecc71;
+  --success-bg: #eafaf1;
+  --error: #e74c3c;
+  --error-bg: #fdedec;
+  --warning: #f39c12;
+  --warning-bg: #fef9e7;
+  --info: #3498db;
+  --info-bg: #ebf5fb;
+
+  /* Layer colors — OSI 7 layers (1=Physical → 7=Application) */
+  --layer-1: #e74c3c;
+  --layer-1-light: #fdedec;
+  --layer-1-dark: #c0392b;
+  --layer-2: #e67e22;
+  --layer-2-light: #fdf2e9;
+  --layer-2-dark: #d35400;
+  --layer-3: #f1c40f;
+  --layer-3-light: #fef9e7;
+  --layer-3-dark: #d4ac0d;
+  --layer-4: #2ecc71;
+  --layer-4-light: #eafaf1;
+  --layer-4-dark: #27ae60;
+  --layer-5: #1abc9c;
+  --layer-5-light: #e8f8f5;
+  --layer-5-dark: #16a085;
+  --layer-6: #3498db;
+  --layer-6-light: #ebf5fb;
+  --layer-6-dark: #2980b9;
+  --layer-7: #9b59b6;
+  --layer-7-light: #f4ecf7;
+  --layer-7-dark: #8e44ad;
+
+  /* TCP/IP layer colors */
+  --tcpip-1: #e67e22;  /* Network Access */
+  --tcpip-2: #f1c40f;  /* Internet */
+  --tcpip-3: #2ecc71;  /* Transport */
+  --tcpip-4: #9b59b6;  /* Application */
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.5rem;
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --line-height: 1.6;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --header-height: 60px;
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --text-primary: #e8e8e8;
+  --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+  --border-color: #2a2a4a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+
+  --accent: #6c83f7;
+  --accent-hover: #8298fa;
+  --accent-light: #1e2547;
+
+  --success-bg: #1a3a2a;
+  --error-bg: #3a1a1a;
+  --warning-bg: #3a2e1a;
+  --info-bg: #1a2a3a;
+
+  --layer-1-light: #3a1a1a;
+  --layer-2-light: #3a2a1a;
+  --layer-3-light: #3a3a1a;
+  --layer-4-light: #1a3a2a;
+  --layer-5-light: #1a3a3a;
+  --layer-6-light: #1a2a3a;
+  --layer-7-light: #2a1a3a;
+}

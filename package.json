@@ -1,0 +1,13 @@
+{
+  "name": "osi-training",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev . --d1=DB --kv=RATE_LIMIT",
+    "db:migrate": "wrangler d1 execute DB --local --file=worker/src/db/migrations/001_initial.sql",
+    "db:migrate:remote": "wrangler d1 execute DB --remote --file=worker/src/db/migrations/001_initial.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  }
+}
